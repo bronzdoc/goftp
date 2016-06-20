@@ -67,13 +67,7 @@ func handleConn(conn net.Conn) {
 }
 
 func getCommandAndArgs(buffer []byte) (command, args string) {
-	message := strings.Split(string(buffer), " ")
-
-	// Clean message if no command args given
-	if len(message) == 1 {
-		message = strings.Split(message[0], "\n")
-	}
-
+	message := strings.Fields(string(buffer))
 	command = strings.TrimSpace(message[0])
 	args = strings.Join(message[1:], " ")
 	return command, args
