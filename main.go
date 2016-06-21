@@ -18,12 +18,6 @@ var (
 )
 
 func main() {
-	//commands := []string{
-	//	"ls",
-	//	"put",
-	//	"get",
-	//	"cd",
-	//}
 	flag.StringVar(&host, "host", "127.0.0.1:4000", "Listening host")
 	listener, err := net.Listen("tcp", host)
 	if err != nil {
@@ -83,7 +77,7 @@ func handleCommand(command string, args []string) (string, error) {
 
 	switch command {
 	case "ls":
-		cmd = exec.Command(command, "-l")
+		cmd = exec.Command("ls", "-l")
 	case "cd":
 		cmd = exec.Command("echo", "changed dir")
 		os.Chdir(args[0])
