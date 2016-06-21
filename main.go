@@ -83,6 +83,8 @@ func handleCommand(command string, args []string) (string, error) {
 	case "cd":
 		cmd = exec.Command("echo", "changed dir")
 		os.Chdir(args[0])
+	case "pwd":
+		cmd = exec.Command("bash", "-c", "pwd")
 	default:
 		return "", errors.New(fmt.Sprintf("Invalid command: %s", command))
 	}
