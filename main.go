@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"net"
+	"os"
 	"os/exec"
 	"strings"
 	"time"
@@ -66,19 +67,22 @@ func handleConn(conn net.Conn) {
 	}
 }
 
-func getCommandAndArgs(buffer []byte) (command, args string) {
+func getCommandAndArgs(buffer []byte) (command string, args []string) {
 	message := strings.Fields(string(buffer))
 	command = strings.TrimSpace(message[0])
-	args = strings.Join(message[1:], " ")
+	args = message[1:len(message)]
 	return command, args
 }
 
-func handleCommand(command, args string) (string, error) {
+func handleCommand(command string, args []string) (string, error) {
 	var cmd *exec.Cmd
 
 	switch command {
 	case "ls":
 		cmd = exec.Command(command, "-l")
+	case "cd":
+		cmd = exec.Command("echo", "changed dir")
+		os.Chdir(args[0])
 	default:
 		return "", errors.New(fmt.Sprintf("Invalid command: %s", command))
 	}
