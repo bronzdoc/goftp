@@ -63,6 +63,10 @@ func handleConn(conn net.Conn) {
 			log.Fatal(err)
 		}
 
+		if out == "quit" {
+			conn.Close()
+		}
+
 		io.WriteString(conn, out)
 	}
 }
@@ -85,6 +89,8 @@ func handleCommand(command string, args []string) (string, error) {
 		os.Chdir(args[0])
 	case "pwd":
 		cmd = exec.Command("bash", "-c", "pwd")
+	case "quit", "bye":
+		return "quit", nil
 	default:
 		return "", errors.New(fmt.Sprintf("Invalid command: %s", command))
 	}
