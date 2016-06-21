@@ -85,6 +85,8 @@ func handleCommand(command string, args []string) (string, error) {
 		cmd = exec.Command("bash", "-c", "pwd")
 	case "quit", "bye":
 		return "quit", nil
+	case "mkdir":
+		cmd = exec.Command("mkdir", args[0])
 	default:
 		return "", errors.New(fmt.Sprintf("Invalid command: %s", command))
 	}
