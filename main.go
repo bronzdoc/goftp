@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"flag"
 	"fmt"
 	"io"
@@ -90,7 +89,7 @@ func handleCommand(command string, args []string) (string, error) {
 	case "delete":
 		cmd = exec.Command("rm", "-rf", args[0])
 	default:
-		return "", errors.New(fmt.Sprintf("Invalid command: %s", command))
+		return fmt.Sprintf("Invalid command: %s\n", command), nil
 	}
 
 	out, err := cmd.Output()
