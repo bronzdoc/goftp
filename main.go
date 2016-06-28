@@ -75,18 +75,18 @@ func handleCommand(command string, args []string) (string, error) {
 	var cmd *exec.Cmd
 
 	switch command {
-	case "ls":
+	case "LIST":
 		cmd = exec.Command("ls", "-l")
-	case "cd":
+	case "CWD":
 		cmd = exec.Command("echo", "changed dir")
 		os.Chdir(args[0])
-	case "pwd":
+	case "PWD":
 		cmd = exec.Command("bash", "-c", "pwd")
-	case "quit", "bye":
+	case "QUIT":
 		return "quit", nil
-	case "mkdir":
+	case "MKD":
 		cmd = exec.Command("mkdir", args[0])
-	case "delete":
+	case "DELE":
 		cmd = exec.Command("rm", "-rf", args[0])
 	default:
 		return fmt.Sprintf("Invalid command: %s\n", command), nil
