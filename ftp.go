@@ -36,8 +36,13 @@ func (f *FTPServer) mkd(dirname string) {
 	f.cmd = exec.Command("mkdir", dirname)
 }
 
-func (f *FTPServer) dele(dirname string) {
-	f.cmd = exec.Command("rm", "-rf", dirname)
+func (f *FTPServer) dele(filename string) {
+	f.cmd = exec.Command("rm", filename)
+}
+
+func (f *FTPServer) cdup() {
+	f.cmd = exec.Command("echo", "changed dir")
+	os.Chdir("..")
 }
 
 func (f *FTPServer) HandleConn(conn net.Conn) {
@@ -83,16 +88,16 @@ func (f *FTPServer) HandleCommand(command string, args []string) (string, error)
 	case "MKD":
 		f.mkd(args[0])
 	case "DELE":
+		f.dele(args[0])
+	case "CDUP":
+		f.cdup()
 	default:
 		return fmt.Sprintf("Invalid command: %s\n", command), nil
 	}
 
 	out, err := f.cmd.Output()
-	if err != nil {
-		return "", err
-	}
 
-	return string(out), nil
+	return string(out), err
 }
 
 func getCommandAndArgs(buffer []byte) (command string, args []string) {
